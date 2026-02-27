@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary:    #2BBFB3;
+  --color-dark:       #1A9E93;
+  --color-bg:         #EDF2F3;
+  --color-surface:    #FFFFFF;
+  --color-border:     #D4E4E5;
+  --color-foreground: #0C2426;
+  --color-medium:     #3D6B6E;
+  --color-light:      #8AB0B3;
+  --color-muted:      #C5E8E6;
+  --color-success:    #17C97E;
+  --color-warning:    #F5A623;
+  --color-danger:     #F05252;
+}
+
+@layer base {
+  html { font-family: 'Segoe UI', system-ui, sans-serif; }
+  body { background-color: #EDF2F3; color: #0C2426; -webkit-font-smoothing: antialiased; }
+}
+
+.skeleton {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #D4E4E5 25%, #C5E8E6 50%, #D4E4E5 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.watermark {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  z-index: 20;
+  pointer-events: none;
+  user-select: none;
+  font-size: 10px;
+  font-family: monospace;
+  color: rgba(12,36,38,0.18);
+  background: rgba(255,255,255,0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+  backdrop-filter: blur(2px);
+}
