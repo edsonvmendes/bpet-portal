@@ -6,7 +6,7 @@ const HTML = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>B3.Pet · Monitorador de Desempenho</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\/script>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--teal:#5FC9BF;--teal-d:#3aada2;--teal-bg:#d9f5f3;--teal-light:#eafaf9;--navy:#1a3a3a;--white:#fff;--page:#eef8f7;--text:#1a3a3a;--muted:#6b9090;--border:#c8e8e5;--orange:#f4a261;--font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace}
