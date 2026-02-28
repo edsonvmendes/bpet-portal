@@ -6,10 +6,10 @@ const HTML = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>B3.Pet · Monitorador de Desempenho</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\/script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"><\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\\/script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"><\\/script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\\/script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -494,7 +494,7 @@ const AC={2024:'#2dd4bf',2025:'#fb923c',2026:'#34d399'};
 let CH={},mapObj=null,markers=[];
 let regiaoAtiva='todas',estadoAtivo='todos';
 
-const fR=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fR=v=>'R$\u00a0'+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fK=v=>v>=1000?(v/1000).toFixed(1)+'K':String(Math.round(v));
 const fN=v=>Math.round(v).toLocaleString('pt-BR');
 const gy=()=>document.getElementById('yrSel').value;
@@ -513,7 +513,7 @@ function updKPI(){
   const d=ft(KPI);if(!d.length)return;const l=d[d.length-1];
   document.getElementById('kTP').textContent=fN(l.pag);
   document.getElementById('kPB').textContent=l.pay;
-  document.getElementById('kTK').textContent='R$ '+l.ticket.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('kTK').textContent='R$\u00a0'+l.ticket.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
 const baseChartOpts=(yFmt)=>({
@@ -553,7 +553,7 @@ function byYear(arr,field){
 }
 
 function mkLegend(containerId,datasets){
-  document.getElementById(containerId).innerHTML=datasets.map(ds=>`<div class="cl-item"><div class="cl-dot" style="background:${ds.backgroundColor}"></div>${ds.label}</div>`).join('');
+  document.getElementById(containerId).innerHTML=datasets.map(ds=>'<div class="cl-item"><div class="cl-dot" style="background:'+ds.backgroundColor+'"></div>'+ds.label+'</div>').join('');
 }
 
 function bCusto(){
@@ -583,14 +583,7 @@ function bTrans(){
       animation:{animateRotate:true}
     }
   });
-  document.getElementById('tL').innerHTML=lbls.map((l,i)=>`
-    <div class="dl-item">
-      <div class="dl-dot" style="background:${cols[i]}"></div>
-      <div>
-        <div class="dl-pct">${((vals[i]/tot)*100).toFixed(1)}% <span style="color:var(--text3);font-size:.65rem;font-weight:400">(${vals[i]})</span></div>
-        <div class="dl-name">${l}</div>
-      </div>
-    </div>`).join('');
+  document.getElementById('tL').innerHTML=lbls.map(function(l,i){return '<div class="dl-item"><div class="dl-dot" style="background:'+cols[i]+'"></div><div><div class="dl-pct">'+((vals[i]/tot)*100).toFixed(1)+'% <span style="color:var(--text3);font-size:.65rem;font-weight:400">('+vals[i]+')</span></div><div class="dl-name">'+l+'</div></div></div>';}).join('');
 }
 
 function initMap(){
@@ -615,7 +608,7 @@ function renderMarkers(){
     const r=7+Math.round((e.tutores/maxT)*20);
     const m=L.circleMarker([e.lat,e.lng],{
       radius:r,fillColor:'#2dd4bf',color:'#0f766e',weight:1.5,fillOpacity:.6
-    }).addTo(mapObj).bindPopup(`<b style="color:#2dd4bf">${e.uf} — ${e.nome}</b><br><span style="color:#94a3b8">${e.tutores} tutores · ${e.regiao}</span>`);
+    }).addTo(mapObj).bindPopup('<b style="color:#2dd4bf">'+e.uf+' — '+e.nome+'</b><br><span style="color:#94a3b8">'+e.tutores+' tutores · '+e.regiao+'</span>');
     markers.push(m);
   });
 }
@@ -632,21 +625,10 @@ function renderFin(){
   const d=ft(FIN);let tC=0,tN=0,tQ=0,tCu=0,tM=0,tL=0,tR=0;
   document.getElementById('fB').innerHTML=d.map(r=>{
     tC+=r.churn;tN+=r.novos;tQ+=r.qt;tCu+=r.custo;tM+=r.mkt;tL+=r.lucro;tR+=r.receita;
-    return `<tr>
-      <td>${r.ano}</td><td>${r.tri}</td><td>${r.mes}</td><td class="r">1</td>
-      <td class="r">${fN(r.churn)}</td>
-      <td class="r num-positive">${fN(r.novos)}</td>
-      <td class="r">${fN(r.qt)}</td>
-      <td class="r">${r.custo.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
-      <td class="r">${fR(r.custo)}</td>
-      <td class="r">${fR(r.mkt)}</td>
-      <td class="r num-positive">${fR(r.lucro)}</td>
-      <td class="r num-pct">${r.margem.toFixed(2)}%</td>
-      <td class="r num-positive">${fR(r.receita)}</td>
-    </tr>`;
+    return '<tr><td>'+r.ano+'</td><td>'+r.tri+'</td><td>'+r.mes+'</td><td class="r">1</td><td class="r">'+fN(r.churn)+'</td><td class="r num-positive">'+fN(r.novos)+'</td><td class="r">'+fN(r.qt)+'</td><td class="r">'+r.custo.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</td><td class="r">'+fR(r.custo)+'</td><td class="r">'+fR(r.mkt)+'</td><td class="r num-positive">'+fR(r.lucro)+'</td><td class="r num-pct">'+r.margem.toFixed(2)+'%</td><td class="r num-positive">'+fR(r.receita)+'</td></tr>';
   }).join('');
   const avgM=tR?(tL/tR*100).toFixed(2)+'%':'--';
-  document.getElementById('fF').innerHTML=`<td colspan="3">Total</td><td class="r">—</td><td class="r">${fN(tC)}</td><td class="r num-positive">${fN(tN)}</td><td class="r">${fN(tQ)}</td><td class="r">${tCu.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td class="r">${fR(tCu)}</td><td class="r">${fR(tM)}</td><td class="r num-positive">${fR(tL)}</td><td class="r num-pct">${avgM}</td><td class="r num-positive">${fR(tR)}</td>`;
+  document.getElementById('fF').innerHTML='<td colspan="3">Total</td><td class="r">—</td><td class="r">'+fN(tC)+'</td><td class="r num-positive">'+fN(tN)+'</td><td class="r">'+fN(tQ)+'</td><td class="r">'+tCu.toLocaleString('pt-BR',{minimumFractionDigits:2})+'</td><td class="r">'+fR(tCu)+'</td><td class="r">'+fR(tM)+'</td><td class="r num-positive">'+fR(tL)+'</td><td class="r num-pct">'+avgM+'</td><td class="r num-positive">'+fR(tR)+'</td>';
   const lbls=d.map(r=>r.mes.substring(0,3)+(gy()==='all'?' '+r.ano:''));
   const cs=d.map(r=>r.custo);
   const tr=cs.map((_,i)=>cs.slice(0,i+1).reduce((a,b)=>a+b,0)/cs.slice(0,i+1).length);
