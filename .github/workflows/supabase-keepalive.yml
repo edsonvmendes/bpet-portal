@@ -1,0 +1,29 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    - cron: '0 10 * * *'  # Todo dia às 10h UTC
+  workflow_dispatch:        # Permite rodar manualmente também
+
+jobs:
+  keepalive:
+    name: Ping Supabase
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Ping Edge Function
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST \
+            -H "x-keepalive-token: ${{ secrets.KEEP_ALIVE_SECRET }}" \
+            "${{ secrets.SUPABASE_PROJECT_URL }}/functions/v1/keep-alive")
+
+          echo "HTTP status: $RESPONSE"
+
+          if [ "$RESPONSE" != "200" ]; then
+            echo "❌ Keep-alive falhou com status $RESPONSE"
+            exit 1
+          fi
+
+          echo "✅ Supabase está ativo"
