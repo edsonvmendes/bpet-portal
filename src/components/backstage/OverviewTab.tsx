@@ -105,10 +105,15 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
   )
 }
 
-// Donut label customizado
-function renderCustomLabel({ cx, cy, midAngle, innerRadius, outerRadius, pct, count }: {
-  cx: number; cy: number; midAngle: number; innerRadius: number; outerRadius: number; pct: number; count: number
-}) {
+// Donut label customizado — usa Record para compatibilidade com PieLabelRenderProps
+function renderCustomLabel(props: Record<string, unknown>) {
+  const cx        = props.cx        as number
+  const cy        = props.cy        as number
+  const midAngle  = props.midAngle  as number
+  const innerRadius = props.innerRadius as number
+  const outerRadius = props.outerRadius as number
+  const count     = props.count     as number
+
   const RADIAN = Math.PI / 180
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5
   const x = cx + radius * Math.cos(-midAngle * RADIAN)
