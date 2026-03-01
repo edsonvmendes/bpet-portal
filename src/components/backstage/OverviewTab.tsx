@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, Sector,
+  type PieLabelRenderProps,
 } from 'recharts'
 import { useState } from 'react'
 
@@ -105,14 +106,14 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
   )
 }
 
-// Donut label customizado — usa Record para compatibilidade com PieLabelRenderProps
-function renderCustomLabel(props: Record<string, unknown>) {
-  const cx        = props.cx        as number
-  const cy        = props.cy        as number
-  const midAngle  = props.midAngle  as number
-  const innerRadius = props.innerRadius as number
-  const outerRadius = props.outerRadius as number
-  const count     = props.count     as number
+// Donut label customizado
+function renderCustomLabel(props: PieLabelRenderProps) {
+  const cx          = Number(props.cx          ?? 0)
+  const cy          = Number(props.cy          ?? 0)
+  const midAngle    = Number(props.midAngle    ?? 0)
+  const innerRadius = Number(props.innerRadius ?? 0)
+  const outerRadius = Number(props.outerRadius ?? 0)
+  const count       = (props as PieLabelRenderProps & { count?: number }).count ?? 0
 
   const RADIAN = Math.PI / 180
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5
